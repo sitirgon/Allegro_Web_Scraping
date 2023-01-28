@@ -1,12 +1,14 @@
 from bs4 import BeautifulSoup as bs
 from selenium import webdriver
-import sqlite3
 import time
 from tabulate import tabulate
 import webbrowser
+import os
 
 def scrap(URL):
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    driver = webdriver.Chrome(options=options)
     driver.get(URL)
     r = driver.page_source
     driver.quit()
@@ -33,6 +35,7 @@ def scrap(URL):
         price = str(price)
         end.append([i, name, price[:-17]])
     headers = ['ID', 'Nazwa', 'Cena']
+    os.system('cls')
     print(tabulate(end, headers, tablefmt='grid', numalign="center", stralign="center"))
     print()
     while True:
