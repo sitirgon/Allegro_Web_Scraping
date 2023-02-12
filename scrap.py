@@ -4,6 +4,7 @@ import time
 from tabulate import tabulate
 import webbrowser
 import os
+import re
 
 def scrap(URL):
     options = webdriver.ChromeOptions()
@@ -17,8 +18,10 @@ def scrap(URL):
     price, name, end, link = [],[],[],[]
 
     soup = bs(r, 'lxml')
-
-    for i in soup.find_all('a', class_=['_w7z6o']):
+    check = soup.find('a', text=re.compile('ŻWIREK'))
+    check_results = check['class'][-1]
+    del check
+    for i in soup.find_all('a', class_=[check_results]):
         name.append(i.text)
         link.append(i.get('href'))
     for i in soup.find_all('span'):
